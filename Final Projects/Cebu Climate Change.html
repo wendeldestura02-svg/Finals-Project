@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cebu Climate Connect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f5f7fa;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+
+        /* === EXACT NAVIGATION BAR AS YOUR IMAGE === */
+        .top-nav {
+            display: flex;
+            gap: 8px;
+            padding: 10px 15px;
+            background: #e8edf2;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 8px 14px;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #2c3e50;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border: none;
+        }
+
+        .nav-link:hover {
+            background: #2980b9;
+            color: white;
+        }
+
+        .nav-link.active {
+            background: #2980b9;
+            color: white;
+        }
+
+        /* === HERO SECTION === */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .weather-card {
+            background: rgba(255,255,255,0.9);
+            color: #2c3e50;
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 180px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+
+        .weather-card .temp {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .hero h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 15px;
+            opacity: 0.95;
+            margin-bottom: 20px;
+        }
+
+        /* === FEATURES BAR === */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .feature {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .feature:hover {
+            background: rgba(255,255,255,0.4);
+            transform: translateY(-2px);
+        }
+
+        .github-btn {
+            display: inline-block;
+            background: #24292f;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 12px;
+            transition: background 0.2s ease;
+        }
+
+        .github-btn:hover {
+            background: #444d56;
+        }
+
+        .feature span {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        /* === MAIN CONTENT SECTIONS === */
+        .content {
+            padding: 20px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding-top: 70px; /* space for sticky nav */
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 17px;
+            border-bottom: 2px solid #e3edf7;
+            padding-bottom: 5px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 7px 0;
+            font-size: 14px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .alert:hover {
+            background: #ffeeba;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 22px; }
+            .nav-link { font-size: 13px; padding: 7px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ✅ EXACT NAVIGATION BAR FROM YOUR IMAGE ✅ -->
+        <div class="top-nav">
+            <button class="nav-link active" onclick="goToSection('home', this)">Home</button>
+            <button class="nav-link" onclick="goToSection('climate', this)">Climate Data</button>
+            <button class="nav-link" onclick="goToSection('hazard', this)">Hazard Map</button>
+            <button class="nav-link" onclick="goToSection('safety', this)">Safety Tips</button>
+            <button class="nav-link" onclick="goToSection('emergency', this)">Emergency</button>
+            <button class="nav-link" onclick="goToSection('settings', this)">Settings</button>
+        </div>
+
+        <!-- === HOME SECTION === -->
+        <div class="hero section" id="home">
+            <div class="weather-card">
+                <div class="temp">☀️ 32°C</div>
+                <p>Sunny<br>Humidity: 65%<br>Wind: 12 km/h NE</p>
+            </div>
+
+            <h1>Cebu Climate Connect</h1>
+            <p>Real-time weather, hazard monitoring, and safety guidelines — simple, fast, reliable.</p>
+            <a class="github-btn" href="https://github.com/yourusername/your-repo" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+
+            <div class="features">
+                <div class="feature" onclick="goToSection('climate')"><span>⚠️</span> Active Alert</div>
+                <div class="feature" onclick="goToSection('climate')"><span>📅</span> 7-Day Forecast</div>
+                <div class="feature" onclick="goToSection('hazard')"><span>🌊</span> Hazard Alert</div>
+                <div class="feature" onclick="goToSection('safety')"><span>🛡️</span> Safety Guide</div>
+                <div class="feature" onclick="goToSection('hazard')"><span>📍</span> Hazard Zone</div>
+                <div class="feature" onclick="goToSection('emergency')"><span>📞</span> Emergency</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- === CLIMATE DATA SECTION === -->
+            <div class="section" id="climate">
+                <div class="card">
+                    <h3>🌡️ Climate Data & Forecast</h3>
+                    <div class="row"><span>Today High/Low</span><span>34°C / 26°C</span></div>
+                    <div class="row"><span>Feels Like</span><span>36°C</span></div>
+                    <div class="row"><span>Rain Chance</span><span>10%</span></div>
+                    <div class="row"><span>Sunrise / Sunset</span><span>5:32 AM / 6:18 PM</span></div>
+                    <div class="row"><span>Air Quality</span><span>Good (42)</span></div>
+
+                    <h3 style="margin-top:20px;">📅 7-Day Forecast</h3>
+                    <div class="row"><span>Today</span><span>☀️ Sunny</span></div>
+                    <div class="row"><span>Sat</span><span>⛅ Partly Cloudy</span></div>
+                    <div class="row"><span>Sun</span><span>🌤️ Sunny Intervals</span></div>
+                    <div class="row"><span>Mon</span><span>🌥️ Cloudy</span></div>
+                    <div class="row"><span>Tue</span><span>🌦️ Isolated Showers</span></div>
+                </div>
+            </div>
+
+            <!-- === HAZARD MAP SECTION === -->
+            <div class="section" id="hazard">
+                <div class="card">
+                    <h3>🌊 Hazard Map & Risk Levels</h3>
+                    <p style="font-size:14px; margin-bottom:10px;">Current risk assessment for Cebu City:</p>
+                    <div class="row"><span>Coastal Areas</span><span>🟡 Moderate (Storm Surge)</span></div>
+                    <div class="row"><span>Lowland Areas</span><span>🟡 Moderate (Flood Risk)</span></div>
+                    <div class="row"><span>Upland Areas</span><span>🟢 Low (Landslide Risk)</span></div>
+                    <div class="row"><span>City Center</span><span>🟢 Low Risk</span></div>
+
+                    <div class="alert" onclick="alert('Detailed Hazard Map: Shows flood zones, landslide areas, and evacuation routes.')">
+                        🗺️ View Full Interactive Map → Click for details
+                    </div>
+                </div>
+            </div>
+
+            <!-- === SAFETY TIPS SECTION === -->
+            <div class="section" id="safety">
+                <div class="card">
+                    <h3>🛡️ Safety Tips & Guidelines</h3>
+                    <div style="font-size:14px; line-height:1.6;">
+                        <p><strong>✅ Before disaster:</strong> Prepare emergency kit, save hotlines, know nearest evacuation center.</p><br>
+                        <p><strong>⚠️ During disaster:</strong> Stay calm, avoid flooded areas, follow official announcements.</p><br>
+                        <p><strong>🔎 After disaster:</strong> Check safety of home, avoid damaged wires/walls, report damage.</p><br>
+                        <p><strong>☀️ Hot Weather:</strong> Drink water, wear light clothes, stay in shade 10AM–3PM.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === EMERGENCY SECTION === -->
+            <div class="section" id="emergency">
+                <div class="card">
+                    <h3>📞 Emergency Contacts & Info</h3>
+                    <div class="row"><span>National Emergency Hotline</span><span>911</span></div>
+                    <div class="row"><span>Red Cross</span><span>143</span></div>
+                    <div class="row"><span>Police / Fire</span><span>117</span></div>
+                    <div class="row"><span>Cebu City LGU</span><span>(032) 254 8888</span></div>
+                    <div class="row"><span>Disaster Risk Office</span><span>(032) 412 4763</span></div>
+
+                    <div class="alert" onclick="alert('Evacuation Centers: List of all safe locations + capacity + map directions.')">
+                        🚑 Nearest Evacuation Centers → Click to view
+                    </div>
+                </div>
+            </div>
+
+            <!-- === SETTINGS SECTION === -->
+            <div class="section" id="settings">
+                <div class="card">
+                    <h3>⚙️ Settings</h3>
+                    <div class="row"><span>Language</span><span>English / Cebuano</span></div>
+                    <div class="row"><span>Alert Notifications</span><span>Enabled</span></div>
+                    <div class="row"><span>Temperature Unit</span><span>°C / °F</span></div>
+                    <div class="row"><span>Location</span><span>Cebu City (Auto)</span></div>
+                    <div class="row"><span>Data Refresh</span><span>Every 15 mins</span></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ✅ INTERACTIVE SCRIPT ✅ -->
+    <script>
+        function goToSection(sectionId, btnElement) {
+            // Smooth jump to section
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+
+            // Update active state on navigation
+            document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+        }
+
+        // Extra interaction: click alerts for more info
+        document.querySelectorAll('.alert').forEach(item => {
+            item.addEventListener('click', () => {
+                alert("ℹ️ " + item.textContent.trim());
+            });
+        });
+    </script>
+</body>
+</html>
